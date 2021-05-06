@@ -21,7 +21,7 @@ $router->get('/key', function () {
     return str_random(32);
 });
 
-$router->get('/peminjamans/{username}', 'PeminjamanController@cariId');
+$router->get('/peminjamans/{username}', 'PeminjamanController@showPinjaman');
 
 $router->post('pinjaman', 'PeminjamanController@store');
 
