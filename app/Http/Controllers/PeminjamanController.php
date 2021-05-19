@@ -18,13 +18,13 @@ class PeminjamanController extends Controller
         $pinjaman = Peminjaman::where('username', $username)->first();
         if ($pinjaman) {
             $id = $pinjaman->id_buku;
-            $response = Http::get('http://localhost:8000/book/id/' . $id);
+            $response = Http::get('http://localhost:8090/book/id/' . $id);
 
-            $result = $response->json();
-
+            $result = $response->json()->getData();
             return response()->json([
                 'Buku' => $result,
-                $pinjaman
+                $pinjaman,
+                'id_pinjam' => [$pinjaman->id]
             ], 200);
         } else {
             return response()->json([
@@ -43,17 +43,17 @@ class PeminjamanController extends Controller
         $pinjaman = Peminjaman::create(
             $request->only(['username', 'id_buku'])
         );
-        $response = Http::get('http://localhost:8000/book/id/' . $request->id_buku);
+        $response = Http::get('http://localhost:8090/book/id/' . $request->id_buku);
         $datajson = json_decode($response, TRUE);
         $data = $datajson['data'];
         $stock = $data['stock'] - 1;
         $kondisi = 0;
 
-        Http::put('http://localhost:8000/book/' . $request->id_buku, [
+        Http::put('http://localhost:8090/book/' . $request->id_buku, [
             'stock' => $stock
         ]);
 
-        Http::put('http://localhost:8090/user/' . $request->username, [
+        Http::put('http://localhost:8000/user/' . $request->username, [
             'kondisi' => $kondisi
         ]);
 
@@ -62,7 +62,6 @@ class PeminjamanController extends Controller
             'data' => $pinjaman
         ], 201);
     }
-
 
     public function destroy($id)
     {
@@ -78,13 +77,13 @@ class PeminjamanController extends Controller
 
         $pinjaman->delete();
 
-        $response = Http::get('http://localhost:8000/book/id/' . $pinjaman->id_buku);
+        $response = Http::get('http://localhost:8090/book/id/' . $pinjaman->id_buku);
         $datajson = json_decode($response, TRUE);
         $data = $datajson['data'];
         $stock = $data['stock'] + 1;
         $kondisi = 0;
 
-        Http::put('http://localhost:8000/book/' . $pinjaman->id_buku, [
+        Http::put('http://localhost:8090/book/' . $pinjaman->id_buku, [
             'stock' => $stock
         ]);
 
