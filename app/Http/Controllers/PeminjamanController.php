@@ -20,9 +20,10 @@ class PeminjamanController extends Controller
             $id = $pinjaman->id_buku;
             $response = Http::get('http://localhost:8090/book/id/' . $id);
 
-            $result = $response->json()->getData();
+            $buku = json_decode($response->getBody()->getContents(), true);
+            $data = $buku['data'];
             return response()->json([
-                'Buku' => $result,
+                'Buku' =>  ['data' => $data],
                 $pinjaman,
                 'id_pinjam' => [$pinjaman->id]
             ], 200);
