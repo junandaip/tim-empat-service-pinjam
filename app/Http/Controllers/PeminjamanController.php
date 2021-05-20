@@ -18,7 +18,7 @@ class PeminjamanController extends Controller
         $pinjaman = Peminjaman::where('username', $username)->first();
         if ($pinjaman) {
             $id = $pinjaman->id_buku;
-            $response = Http::get('http://localhost:8090/book/id/' . $id);
+            $response = Http::get('https://ms-books-service.herokuapp.com//book/id/' . $id);
 
             $buku = json_decode($response->getBody()->getContents(), true);
             $data = $buku['data'];
@@ -44,17 +44,17 @@ class PeminjamanController extends Controller
         $pinjaman = Peminjaman::create(
             $request->only(['username', 'id_buku'])
         );
-        $response = Http::get('http://localhost:8090/book/id/' . $request->id_buku);
+        $response = Http::get('https://ms-books-service.herokuapp.com/book/id/' . $request->id_buku);
         $datajson = json_decode($response, TRUE);
         $data = $datajson['data'];
         $stock = $data['stock'] - 1;
         $kondisi = 0;
 
-        Http::put('http://localhost:8090/book/' . $request->id_buku, [
+        Http::put('https://ms-books-service.herokuapp.com/book/' . $request->id_buku, [
             'stock' => $stock
         ]);
 
-        Http::put('http://localhost:8000/user/' . $request->username, [
+        Http::put('https://mservice-user-service.herokuapp.com/user/' . $request->username, [
             'kondisi' => $kondisi
         ]);
 
@@ -78,17 +78,17 @@ class PeminjamanController extends Controller
 
         $pinjaman->delete();
 
-        $response = Http::get('http://localhost:8090/book/id/' . $pinjaman->id_buku);
+        $response = Http::get('https://ms-books-service.herokuapp.com/book/id/' . $pinjaman->id_buku);
         $datajson = json_decode($response, TRUE);
         $data = $datajson['data'];
         $stock = $data['stock'] + 1;
         $kondisi = 0;
 
-        Http::put('http://localhost:8090/book/' . $pinjaman->id_buku, [
+        Http::put('https://ms-books-service.herokuapp.com/book/' . $pinjaman->id_buku, [
             'stock' => $stock
         ]);
 
-        Http::put('http://localhost:8000/user/' . $pinjaman->username, [
+        Http::put('https://mservice-user-service.herokuapp.com/user/' . $pinjaman->username, [
             'kondisi' => $kondisi
         ]);
 
