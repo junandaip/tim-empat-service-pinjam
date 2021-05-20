@@ -82,7 +82,7 @@ class PeminjamanController extends Controller
         $datajson = json_decode($response, TRUE);
         $data = $datajson['data'];
         $stock = $data['stock'] + 1;
-        $kondisi = 0;
+        $kondisi = 1;
 
         Http::put('https://ms-books-service.herokuapp.com/book/' . $pinjaman->id_buku, [
             'stock' => $stock
