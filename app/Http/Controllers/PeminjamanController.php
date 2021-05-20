@@ -18,7 +18,7 @@ class PeminjamanController extends Controller
         $pinjaman = Peminjaman::where('username', $username)->first();
         if ($pinjaman) {
             $id = $pinjaman->id_buku;
-            $response = Http::get('https://ms-books-service.herokuapp.com//book/id/' . $id);
+            $response = Http::get('https://ms-books-service.herokuapp.com/book/id/' . $id);
 
             $buku = json_decode($response->getBody()->getContents(), true);
             $data = $buku['data'];
