@@ -24,7 +24,7 @@ class PeminjamanController extends Controller
             $data = $buku['data'];
             return response()->json([
                 'Buku' =>  ['data' => $data],
-                $pinjaman,
+                'data' => $pinjaman,
                 'id_pinjam' => [$pinjaman->id]
             ], 200);
         } else {
