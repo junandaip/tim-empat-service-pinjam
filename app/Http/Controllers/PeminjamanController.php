@@ -33,7 +33,7 @@ class PeminjamanController extends Controller
             ], 404);
         }
     }
-
+    //
     public function store(Request $request)
     {
         $this->validate($request, [
